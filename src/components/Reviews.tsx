@@ -62,7 +62,7 @@ export default function Reviews() {
             What Families Say
           </h2>
           <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
-            Don't just take our word for it. Here's what families and healthcare professionals 
+            Don&apos;t just take our word for it. Here&apos;s what families and healthcare professionals 
             have to say about our services.
           </p>
           <div className="w-24 h-1 gradient-primary mx-auto rounded-full" />
@@ -118,7 +118,7 @@ export default function Reviews() {
                         
                         {/* Review Text */}
                         <blockquote className="text-gray-700 leading-relaxed mb-6 flex-grow relative z-10 italic">
-                          "{review.text}"
+                          &ldquo;{review.text}&rdquo;
                         </blockquote>
                         
                         {/* Author Info */}

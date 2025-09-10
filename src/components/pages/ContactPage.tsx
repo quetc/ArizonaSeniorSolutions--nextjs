@@ -72,7 +72,7 @@ export default function ContactPage() {
           </h1>
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
             Ready to find the perfect care community for your loved one? 
-            We're here to help with expert guidance and personalized service.
+            We&apos;re here to help with expert guidance and personalized service.
           </p>
           <div className="w-24 h-1 gradient-primary mx-auto rounded-full" />
         </motion.div>

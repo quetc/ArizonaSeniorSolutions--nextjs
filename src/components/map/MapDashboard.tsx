@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { MapPin, Search, Filter, Phone, Navigation, Plus, Loader2, Eye, EyeOff, ChevronUp, ChevronDown } from 'lucide-react'
+import { MapPin, Search, Filter, Navigation, Plus, Loader2, Eye, EyeOff, ChevronUp, ChevronDown } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card } from '@/components/ui/card'

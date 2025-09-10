@@ -5,7 +5,7 @@ import Image from "next/image"
 import { Phone, Heart, Award, Users, Clock } from "lucide-react"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import { useNavigation } from "@/contexts/NavigationContext"
 
 const features = [
@@ -98,7 +98,7 @@ export default function AboutPage() {
                 <div className="w-24 h-1 gradient-primary mx-auto rounded-full mb-8" />
                 <p className="text-lg text-muted-foreground mb-8">
                   We believe that every story deserves individualized attention and care, 
-                  and we're committed to finding the perfect fit for your family.
+                  and we&apos;re committed to finding the perfect fit for your family.
                 </p>
                 
                 <motion.div

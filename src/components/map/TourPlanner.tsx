@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { MapPin, Phone, Navigation, X, Clock, DollarSign, Users } from 'lucide-react'
+import { MapPin, Navigation, X, Clock, DollarSign, Users } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import type { Facility } from '@/types/facility'

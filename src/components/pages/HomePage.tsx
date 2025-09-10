@@ -168,7 +168,7 @@ export default function HomePage() {
               <Card className="glass-brand-solid mb-6 md:mb-8">
                 <CardContent className="p-4 md:p-6 lg:p-8">
                   <p className="text-base md:text-lg text-gray-800 leading-relaxed mb-4 md:mb-6">
-                    We're here to help you find the right senior living community for your aging parent 
+                    We&apos;re here to help you find the right senior living community for your aging parent 
                     or spouse. Allow us to guide you through the process with expert advice based on 
                     your unique needs.
                   </p>
@@ -376,7 +376,7 @@ export default function HomePage() {
                       title: "Initial Consultation",
                       content: (
                         <div className="space-y-4">
-                          <p className="text-muted-foreground">During our free consultation, we'll discuss:</p>
+                          <p className="text-muted-foreground">During our free consultation, we&apos;ll discuss:</p>
                           <ul className="space-y-2">
                             <li className="flex items-start gap-2">
                               <CheckCircle className="h-5 w-5 text-success mt-0.5 flex-shrink-0" />
@@ -411,7 +411,7 @@ export default function HomePage() {
                             </li>
                             <li className="flex items-start gap-2">
                               <CheckCircle className="h-5 w-5 text-success mt-0.5 flex-shrink-0" />
-                              <span>Insider knowledge about each community's strengths</span>
+                              <span>Insider knowledge about each community&apos;s strengths</span>
                             </li>
                             <li className="flex items-start gap-2">
                               <CheckCircle className="h-5 w-5 text-success mt-0.5 flex-shrink-0" />

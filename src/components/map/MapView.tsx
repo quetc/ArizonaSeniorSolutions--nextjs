@@ -1,8 +1,10 @@
 "use client"
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useRef, useState } from 'react'
 import { Loader2, MapPin } from 'lucide-react'
 import type { Facility } from '@/types/facility'
+
 
 interface MapViewProps {
   facilities: Facility[]
@@ -14,8 +16,7 @@ interface MapViewProps {
 export default function MapView({ 
   facilities, 
   selectedFacility, 
-  onFacilitySelect, 
-  clientLocation 
+  onFacilitySelect
 }: MapViewProps) {
   const mapRef = useRef<HTMLDivElement>(null)
   const [map, setMap] = useState<google.maps.Map | null>(null)
@@ -48,7 +49,7 @@ export default function MapView({
         } else {
           createMap()
         }
-      } catch (err) {
+      } catch {
         setError('Error initializing map')
         setIsLoading(false)
       }
@@ -224,7 +225,7 @@ export default function MapView({
     if (facilities.length > 0) {
       map.fitBounds(bounds)
     }
-  }, [map, facilities, selectedFacility, onFacilitySelect])
+  }, [map, facilities, selectedFacility, onFacilitySelect, markers])
 
   // Mock coordinates for Arizona cities (replace with real geocoding)
   const getMockCoordinates = (city: string) => {
