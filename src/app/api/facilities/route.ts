@@ -4,6 +4,10 @@ import type { Facility } from '@/types/facility'
 // Google Sheets CSV export URL
 const GOOGLE_SHEETS_CSV_URL = 'https://docs.google.com/spreadsheets/d/1rdW8JWG734RdaZ3NHqin9E4Tdzin-52KuEriQYpM0IY/export?format=csv&gid=0'
 
+// Force dynamic route to prevent static generation issues
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 export async function GET() {
   try {
     const response = await fetch(GOOGLE_SHEETS_CSV_URL, {
