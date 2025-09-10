@@ -43,7 +43,7 @@ const steps = [
 ]
 
 const stats = [
-  { number: "13+", label: "Years Experience", icon: Award },
+  { number: "15+", label: "Years Experience", icon: Award },
   { number: "500+", label: "Successful Placements", icon: Users },
   { number: "100%", label: "Free Service", icon: Heart },
   { number: "7", label: "Days Average Placement", icon: Clock },
@@ -252,7 +252,7 @@ export default function HomePage() {
                     <Card className="glass-brand-opaque">
                       <CardContent className="p-2 md:p-3">
                         <div className="text-center">
-                          <div className="text-sm md:text-lg font-bold text-gray-900">13+</div>
+                          <div className="text-sm md:text-lg font-bold text-gray-900">15+</div>
                           <div className="text-xs text-gray-800 font-medium">Years</div>
                         </div>
                       </CardContent>

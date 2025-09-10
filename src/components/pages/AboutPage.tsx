@@ -16,7 +16,7 @@ const features = [
   },
   {
     icon: Award,
-    title: "13+ Years Experience",
+    title: "15+ Years Experience",
     description: "Proven track record in senior care placement"
   },
   {
@@ -194,7 +194,7 @@ export default function AboutPage() {
                   
                   <p className="text-lg text-gray-600 leading-relaxed">
                     Navigating resources and researching senior living options can be very overwhelming. 
-                    With over 13 years of experience, Carole-Lynne has the vast knowledge of all resources 
+                    With over 15 years of experience, Carole-Lynne has the vast knowledge of all resources 
                     and placement options available for when the need arises. She will save your time and 
                     energy, by recommending top quality options, and give you peace of mind that all of 
                     the details are taken care of. She then in turn educates you and negotiates for you 
