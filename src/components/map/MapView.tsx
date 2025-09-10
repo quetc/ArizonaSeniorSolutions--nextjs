@@ -182,7 +182,7 @@ export default function MapView({
           strokeColor: '#ffffff',
           strokeWeight: 3,
           scale: isSelected ? 2.2 : 1.8,
-          anchor: { x: 12, y: 24 }
+          anchor: new window.google.maps.Point(12, 24)
         },
         zIndex: isSelected ? 1000 : 100,
         animation: isSelected ? window.google.maps.Animation.BOUNCE : undefined

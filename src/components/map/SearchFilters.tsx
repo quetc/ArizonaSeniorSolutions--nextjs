@@ -34,8 +34,8 @@ export default function SearchFilters({ facilities, onFilterChange }: SearchFilt
   })
 
   // Get unique values for dropdowns
-  const uniqueFacilityTypes = [...new Set(facilities.map(f => f.facility_type).filter(Boolean))]
-  const uniqueCities = [...new Set(facilities.map(f => f.city).filter(Boolean))].sort()
+  const uniqueFacilityTypes = Array.from(new Set(facilities.map(f => f.facility_type).filter(Boolean)))
+  const uniqueCities = Array.from(new Set(facilities.map(f => f.city).filter(Boolean))).sort()
 
   useEffect(() => {
     let filtered = facilities
