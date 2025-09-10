@@ -1,7 +1,7 @@
 "use client"
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, useCallback } from 'react'
 import { Loader2, MapPin } from 'lucide-react'
 import type { Facility } from '@/types/facility'
 
@@ -24,31 +24,131 @@ export default function MapView({
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
+  // Fallback coordinates for when geocoding is unavailable (client-side fallback)
+  const getFallbackCoordinates = useCallback((city: string, zip: string) => {
+    // City coordinates mapping
+    const cityCoords: { [key: string]: { lat: number, lng: number } } = {
+      'Phoenix': { lat: 33.4484, lng: -112.0740 },
+      'Scottsdale': { lat: 33.4942, lng: -111.9261 },
+      'Mesa': { lat: 33.4152, lng: -111.8315 },
+      'Tempe': { lat: 33.4255, lng: -111.9400 },
+      'Chandler': { lat: 33.3062, lng: -111.8413 },
+      'Gilbert': { lat: 33.3528, lng: -111.7890 },
+      'Glendale': { lat: 33.5387, lng: -112.1860 },
+      'Peoria': { lat: 33.5806, lng: -112.2374 },
+      'Surprise': { lat: 33.6292, lng: -112.3679 },
+      'Avondale': { lat: 33.4356, lng: -112.3496 },
+      'Goodyear': { lat: 33.4355, lng: -112.3576 },
+      'Buckeye': { lat: 33.3703, lng: -112.5838 },
+    }
+    
+    // ZIP code to city mapping for major areas
+    const zipToCity: { [key: string]: string } = {
+      // Gilbert ZIP codes
+      '85233': 'Gilbert', '85234': 'Gilbert', '85295': 'Gilbert', '85296': 'Gilbert',
+      '85297': 'Gilbert', '85298': 'Gilbert',
+      // Phoenix ZIP codes
+      '85001': 'Phoenix', '85002': 'Phoenix', '85003': 'Phoenix', '85004': 'Phoenix',
+      '85006': 'Phoenix', '85007': 'Phoenix', '85008': 'Phoenix', '85009': 'Phoenix',
+      '85012': 'Phoenix', '85013': 'Phoenix', '85014': 'Phoenix', '85015': 'Phoenix',
+      '85016': 'Phoenix', '85017': 'Phoenix', '85018': 'Phoenix', '85019': 'Phoenix',
+      '85020': 'Phoenix', '85021': 'Phoenix', '85022': 'Phoenix', '85023': 'Phoenix',
+      '85024': 'Phoenix', '85027': 'Phoenix', '85028': 'Phoenix', '85029': 'Phoenix',
+      '85032': 'Phoenix', '85033': 'Phoenix', '85034': 'Phoenix', '85035': 'Phoenix',
+      '85037': 'Phoenix', '85040': 'Phoenix', '85041': 'Phoenix', '85042': 'Phoenix',
+      '85043': 'Phoenix', '85044': 'Phoenix', '85045': 'Phoenix', '85048': 'Phoenix',
+      '85051': 'Phoenix', '85053': 'Phoenix', '85054': 'Phoenix', '85083': 'Phoenix',
+      // Scottsdale ZIP codes
+      '85250': 'Scottsdale', '85251': 'Scottsdale', '85252': 'Scottsdale', '85253': 'Scottsdale',
+      '85254': 'Scottsdale', '85255': 'Scottsdale', '85256': 'Scottsdale', '85257': 'Scottsdale',
+      '85258': 'Scottsdale', '85259': 'Scottsdale', '85260': 'Scottsdale', '85261': 'Scottsdale',
+      '85262': 'Scottsdale', '85266': 'Scottsdale', '85267': 'Scottsdale', '85268': 'Scottsdale',
+      // Mesa ZIP codes  
+      '85201': 'Mesa', '85202': 'Mesa', '85203': 'Mesa', '85204': 'Mesa',
+      '85205': 'Mesa', '85206': 'Mesa', '85207': 'Mesa', '85208': 'Mesa',
+      '85209': 'Mesa', '85210': 'Mesa', '85211': 'Mesa', '85212': 'Mesa',
+      '85213': 'Mesa', '85214': 'Mesa', '85215': 'Mesa', '85216': 'Mesa',
+      // Tempe ZIP codes
+      '85281': 'Tempe', '85282': 'Tempe', '85283': 'Tempe', '85284': 'Tempe', '85285': 'Tempe',
+      // Chandler ZIP codes
+      '85224': 'Chandler', '85225': 'Chandler', '85226': 'Chandler', '85248': 'Chandler', '85249': 'Chandler',
+      // Glendale ZIP codes
+      '85301': 'Glendale', '85302': 'Glendale', '85303': 'Glendale', '85304': 'Glendale',
+      '85305': 'Glendale', '85306': 'Glendale', '85307': 'Glendale', '85308': 'Glendale', '85309': 'Glendale',
+      // Peoria ZIP codes
+      '85345': 'Peoria', '85381': 'Peoria', '85382': 'Peoria', '85383': 'Peoria', '85385': 'Peoria',
+      // Surprise ZIP codes  
+      '85374': 'Surprise', '85378': 'Surprise', '85387': 'Surprise', '85388': 'Surprise',
+      // Avondale ZIP codes
+      '85323': 'Avondale', '85392': 'Avondale', '85393': 'Avondale',
+      // Goodyear ZIP codes
+      '85338': 'Goodyear', '85395': 'Goodyear',
+      // Buckeye ZIP codes
+      '85326': 'Buckeye', '85396': 'Buckeye'
+    }
+    
+    // Check if it's a ZIP code first, then convert to city
+    const cityName = zipToCity[zip] || city
+    const baseCoords = cityCoords[cityName] || { lat: 33.4484, lng: -112.0740 } // Default to Phoenix
+    
+    // Add small random offset to avoid overlapping markers
+    const hash = city.length + zip.length
+    const latOffset = ((hash % 100) / 1000) * 0.02 // Small offset within city bounds
+    const lngOffset = (((hash >> 4) % 100) / 1000) * 0.02
+    
+    return {
+      lat: baseCoords.lat + latOffset,
+      lng: baseCoords.lng + lngOffset
+    }
+  }, [])
+
+  // Get coordinates from facility data (now geocoded server-side)
+  const getCoordinates = useCallback((facility: Facility) => {
+    // Use geocoded coordinates if available
+    if (facility.latitude && facility.longitude) {
+      return {
+        lat: facility.latitude,
+        lng: facility.longitude
+      }
+    }
+    
+    // Fallback to city-based coordinates if geocoding failed
+    return getFallbackCoordinates(facility.city, facility.zip)
+  }, [getFallbackCoordinates])
+
   // Initialize Google Maps
   useEffect(() => {
     const initMap = async () => {
       try {
-        // Check if Google Maps is loaded
-        if (typeof window.google === 'undefined') {
-          // Load Google Maps script
-          const script = document.createElement('script')
-          script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`
-          script.async = true
-          script.defer = true
-          
-          script.onload = () => {
-            createMap()
-          }
-          
-          script.onerror = () => {
-            setError('Failed to load Google Maps')
-            setIsLoading(false)
-          }
-          
-          document.head.appendChild(script)
-        } else {
+        // Check if Google Maps is already loaded
+        if (typeof window.google !== 'undefined' && window.google.maps) {
+          createMap()
+          return
+        }
+
+        // Check if script is already being loaded
+        const existingScript = document.querySelector('script[src*="maps.googleapis.com"]')
+        if (existingScript) {
+          existingScript.addEventListener('load', createMap)
+          return
+        }
+
+        // Load Google Maps script
+        const script = document.createElement('script')
+        script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`
+        script.async = true
+        script.defer = true
+        
+        script.onload = () => {
           createMap()
         }
+        
+        script.onerror = () => {
+          setError('Failed to load Google Maps')
+          setIsLoading(false)
+        }
+        
+        document.head.appendChild(script)
       } catch {
         setError('Error initializing map')
         setIsLoading(false)
@@ -132,7 +232,7 @@ export default function MapView({
         zoomControlOptions: {
           position: window.google.maps.ControlPosition.RIGHT_BOTTOM
         },
-        gestureHandling: 'cooperative'
+        gestureHandling: 'greedy' // Changed from 'cooperative' for better mobile experience
       })
 
       setMap(mapInstance)
@@ -140,6 +240,13 @@ export default function MapView({
     }
 
     initMap()
+
+    // Cleanup function
+    return () => {
+      // Clean up markers when component unmounts
+      markers.forEach(marker => marker.setMap(null))
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // Update markers when facilities change
@@ -152,27 +259,26 @@ export default function MapView({
     const newMarkers: google.maps.Marker[] = []
     const bounds = new window.google.maps.LatLngBounds()
 
-    facilities.forEach((facility) => {
-      // For demo purposes, we'll use a geocoding service or mock coordinates
-      // In production, you'd want to geocode the addresses
-      const mockCoords = getMockCoordinates(facility.city)
-      
-      // Get facility type color
-      const getFacilityColor = (type: string) => {
-        const lowerType = type.toLowerCase()
-        if (lowerType.includes('memory care')) return '#9333ea' // Purple
-        if (lowerType.includes('assisted living home')) return '#3b82f6' // Blue
-        if (lowerType.includes('assisted living center')) return '#10b981' // Green
-        if (lowerType.includes('independent living')) return '#f59e0b' // Yellow
-        return '#6b7280' // Gray default
-      }
+    // Get facility type color function
+    const getFacilityColor = (type: string) => {
+      const lowerType = type.toLowerCase()
+      if (lowerType.includes('memory care')) return '#9333ea' // Purple
+      if (lowerType.includes('assisted living home')) return '#3b82f6' // Blue
+      if (lowerType.includes('assisted living center')) return '#10b981' // Green
+      if (lowerType.includes('independent living')) return '#f59e0b' // Yellow
+      return '#6b7280' // Gray default
+    }
 
+    facilities.forEach((facility) => {
+      // Get coordinates from geocoded facility data
+      const coords = getCoordinates(facility)
+      
       const facilityColor = getFacilityColor(facility.facility_type)
       const isSelected = selectedFacility?.id === facility.id
 
       // Create custom marker with better visibility
       const marker = new window.google.maps.Marker({
-        position: mockCoords,
+        position: coords,
         map: map,
         title: facility.name,
         icon: {
@@ -198,6 +304,7 @@ export default function MapView({
             <div style="margin-top: 8px; padding: 4px 8px; background: ${facilityColor}20; border-radius: 4px; font-size: 11px; color: ${facilityColor}; font-weight: 500;">
               ${facility.facility_type}
             </div>
+            ${facility.geocoded === false ? '<div style="margin-top: 4px; font-size: 10px; color: #9ca3af;">⚠ Approximate location</div>' : ''}
           </div>
         `
       })
@@ -213,35 +320,21 @@ export default function MapView({
       marker.addListener('click', () => {
         onFacilitySelect(facility)
         // Smooth pan to marker
-        map.panTo(mockCoords)
+        map.panTo(coords)
       })
 
       newMarkers.push(marker)
-      bounds.extend(mockCoords)
+      bounds.extend(coords)
     })
 
     setMarkers(newMarkers)
     
-    if (facilities.length > 0) {
+    // Only fit bounds if we have facilities and this is the initial load
+    if (facilities.length > 0 && markers.length === 0) {
       map.fitBounds(bounds)
     }
-  }, [map, facilities, selectedFacility, onFacilitySelect, markers])
-
-  // Mock coordinates for Arizona cities (replace with real geocoding)
-  const getMockCoordinates = (city: string) => {
-    const cityCoords: { [key: string]: { lat: number, lng: number } } = {
-      'Phoenix': { lat: 33.4484 + (Math.random() - 0.5) * 0.1, lng: -112.0740 + (Math.random() - 0.5) * 0.1 },
-      'Scottsdale': { lat: 33.4942 + (Math.random() - 0.5) * 0.05, lng: -111.9261 + (Math.random() - 0.5) * 0.05 },
-      'Mesa': { lat: 33.4152 + (Math.random() - 0.5) * 0.05, lng: -111.8315 + (Math.random() - 0.5) * 0.05 },
-      'Tempe': { lat: 33.4255 + (Math.random() - 0.5) * 0.03, lng: -111.9400 + (Math.random() - 0.5) * 0.03 },
-      'Chandler': { lat: 33.3062 + (Math.random() - 0.5) * 0.05, lng: -111.8413 + (Math.random() - 0.5) * 0.05 },
-      'Gilbert': { lat: 33.3528 + (Math.random() - 0.5) * 0.03, lng: -111.7890 + (Math.random() - 0.5) * 0.03 },
-      'Glendale': { lat: 33.5387 + (Math.random() - 0.5) * 0.05, lng: -112.1860 + (Math.random() - 0.5) * 0.05 },
-      'Peoria': { lat: 33.5806 + (Math.random() - 0.5) * 0.05, lng: -112.2374 + (Math.random() - 0.5) * 0.05 },
-    }
-    
-    return cityCoords[city] || { lat: 33.4484 + (Math.random() - 0.5) * 0.2, lng: -112.0740 + (Math.random() - 0.5) * 0.2 }
-  }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [map, facilities, selectedFacility, onFacilitySelect, getCoordinates])
 
   if (error) {
     return (

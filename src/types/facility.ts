@@ -15,6 +15,9 @@ export interface Facility {
   notes?: string
   date_added?: string
   added_by?: string
+  latitude?: number
+  longitude?: number
+  geocoded?: boolean // Track if coordinates are from geocoding vs fallback
 }
 
 export interface FacilityFilters {
