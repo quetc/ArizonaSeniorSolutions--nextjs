@@ -1,0 +1,210 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Enhanced color palette for senior care business - WCAG AA compliant */
+    --background: 0 0% 100%;
+    --foreground: 240 10% 15%; /* Darker for better contrast */
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 15%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 15%;
+    
+    /* Primary colors - Trustworthy, calming blues with better contrast */
+    --primary: 217 91% 45%; /* Darker for better contrast */
+    --primary-foreground: 0 0% 98%;
+    
+    /* Secondary colors - Warm, caring earth tones with better contrast */
+    --secondary: 47 66% 45%; /* Darker for better contrast */
+    --secondary-foreground: 0 0% 98%;
+    
+    /* Accent colors - Soft, welcoming */
+    --accent: 204 94% 94%;
+    --accent-foreground: 240 10% 15%;
+    
+    /* Muted colors with better contrast */
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 8.9% 35%; /* Darker for better contrast */
+    
+    /* Semantic colors for senior care context */
+    --success: 142 76% 36%;
+    --success-foreground: 355 100% 97%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 48 96% 89%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    
+    /* UI elements */
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 217 91% 60%;
+    --radius: 0.75rem;
+    
+    /* Care-focused gradients - accessible versions */
+    --gradient-primary: linear-gradient(135deg, hsl(217 91% 45%) 0%, hsl(212 100% 40%) 100%);
+    --gradient-secondary: linear-gradient(135deg, hsl(47 66% 45%) 0%, hsl(45 93% 40%) 100%);
+    --gradient-warm: linear-gradient(135deg, hsl(25 95% 45%) 0%, hsl(31 100% 50%) 100%);
+    --gradient-trust: linear-gradient(135deg, hsl(204 100% 97%) 0%, hsl(213 100% 96%) 100%);
+  }
+
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 217 91% 60%;
+    --primary-foreground: 240 10% 3.9%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 217 91% 60%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display;
+  }
+}
+
+@layer utilities {
+  /* Glass morphism utilities - accessible versions */
+  .glass {
+    @apply bg-white/90 backdrop-blur-md border border-white/30 shadow-lg;
+  }
+  
+  .glass-dark {
+    @apply bg-black/85 backdrop-blur-md border border-white/20 shadow-lg;
+  }
+  
+  .glass-card {
+    @apply bg-white/85 backdrop-blur-sm border border-white/40 shadow-xl;
+  }
+  
+  /* Brand-specific glass utilities using our new colors */
+  .glass-brand {
+    background: rgba(180, 212, 250, 0.25);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(180, 212, 250, 0.3);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  }
+  
+  .glass-brand-light {
+    background: rgba(180, 212, 250, 0.15);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(180, 212, 250, 0.25);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  }
+  
+  .glass-brand-strong {
+    background: rgba(180, 212, 250, 0.35);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(180, 212, 250, 0.4);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+  }
+  
+  /* High-readability glass for important content */
+  .glass-brand-opaque {
+    background: rgba(180, 212, 250, 0.85);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(180, 212, 250, 0.6);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  }
+  
+  .glass-brand-semi-opaque {
+    background: rgba(180, 212, 250, 0.65);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(180, 212, 250, 0.5);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  }
+  
+  /* Ultra-high readability for hero sections */
+  .glass-brand-solid {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(180, 212, 250, 0.3);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Gradient utilities for senior care branding */
+  .gradient-primary {
+    background: var(--gradient-primary);
+  }
+  
+  .gradient-secondary {
+    background: var(--gradient-secondary);
+  }
+  
+  .gradient-warm {
+    background: var(--gradient-warm);
+  }
+  
+  .gradient-trust {
+    background: var(--gradient-trust);
+  }
+  
+  /* Animation utilities for engaging user experience */
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+  
+  .animate-pulse-slow {
+    animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  
+  /* Trust-building visual elements - accessible */
+  .trust-badge {
+    @apply inline-flex items-center gap-2 px-4 py-2 bg-success/15 text-success rounded-full text-sm font-medium border border-success/30;
+  }
+  
+  .care-highlight {
+    @apply bg-gradient-to-r from-primary/15 to-secondary/15 px-2 py-1 rounded border border-primary/20;
+  }
+  
+  /* Accessibility utilities */
+  .focus-visible-ring {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2;
+  }
+  
+  .high-contrast-text {
+    @apply text-foreground;
+  }
+  
+  .accessible-link {
+    @apply text-primary hover:text-primary/80 underline-offset-4 hover:underline focus-visible-ring;
+  }
+  
+  .accessible-button {
+    @apply focus-visible-ring transition-all duration-200;
+  }
+}
+
+@keyframes float {
+  0%, 100% { 
+    transform: translateY(0px); 
+  }
+  50% { 
+    transform: translateY(-10px); 
+  }
+}
